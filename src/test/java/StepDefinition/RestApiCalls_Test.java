@@ -1,7 +1,5 @@
 package StepDefinition;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -11,7 +9,6 @@ import org.apache.http.util.Asserts;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import static org.junit.Assert.assertEquals;
 
 public class RestApiCalls_Test {
 private String baseUrl;
@@ -26,7 +23,7 @@ CloseableHttpResponse getStubResponse = null;
 	
 	@When("^I search for person \"(.*?)\"$")
 	public void iSearchForPerson(String name) throws Throwable {
-	//	HttpClient client = HttpClients.createDefault();
+		//	HttpClient client = HttpClients.createDefault();
 		
 		//HttpGet getStubMethod = new HttpGet(baseUrl);
 	
