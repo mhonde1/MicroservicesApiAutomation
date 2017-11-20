@@ -4,37 +4,45 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.Asserts;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.junit.Assert.assertEquals;
 
 public class RestApiCalls_Test {
 private String baseUrl;
+HttpResponse getStubResponse = null;
+
+
 
 	@Given("^get call base url as \"(.*?)\"$")
 	public void getCallBaseUrlAs(String baseUrl) throws Throwable {
 		this.baseUrl=baseUrl;
 	}
-
+	
 	@When("^I search for person \"(.*?)\"$")
 	public void iSearchForPerson(String name) throws Throwable {
 		HttpClient client = HttpClients.createDefault();
 		baseUrl = baseUrl.concat("search?source="+name);
 		HttpGet getStubMethod = new HttpGet(baseUrl);
 	
-		HttpResponse getStubResponse = client.execute(getStubMethod);
-      int getStubStatusCode = getStubResponse.getStatusLine().getStatusCode();
-          System.out.println("Status code is " + getStubStatusCode );
-      if (getStubStatusCode < 200 || getStubStatusCode >= 300) {
-         // Handle non-2xx status code
-         return;
-      }
+		getStubResponse = client.execute(getStubMethod);
+      
 	}
 
 	@Then("^I get response as \"(.*?)\"$")
-	public void iGetResponseAs(String responseCode) throws Throwable {
+	public void iGetResponseAs(int responseCode) throws Throwable {
 		
+		if (getStubResponse != null) {
+			int getStubStatusCode = getStubResponse.getStatusLine().getStatusCode();
+			Asserts.check(responseCode == getStubStatusCode, "Recieved correct response");
+			
+		}
 	}
+
+	
 	
 	/*
 	@Test
