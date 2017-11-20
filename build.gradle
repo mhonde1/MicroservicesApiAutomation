@@ -1,0 +1,77 @@
+/*
+ * Copyright (c) 2017 Restoration Hardware, Inc. All rights reserved.
+ *
+ */
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+    testCompile 'junit:junit:'+junitVersion
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
+    testCompile 'io.github.prashant-ramcharan:courgette-jvm:1.4.0'
+    compile 'io.github.prashant-ramcharan:courgette-jvm:1.4.0'
+//	compile 'org.seleniumhq.selenium:selenium-firefox-driver:'+seleniumVersion
+ //   compile 'org.seleniumhq.selenium:selenium-chrome-driver:'+seleniumVersion
+//	compile 'org.seleniumhq.selenium:selenium-api:'+seleniumVersion
+//	compile 'org.seleniumhq.selenium:selenium-java:'+seleniumVersion
+//	compile 'info.cukes:cucumber-core:'+cucumberVersion
+//	compile 'info.cukes:gherkin:'+gherkinVersion
+//	compile 'info.cukes:cucumber-jvm-deps:'+cucumberJvmDepsVersion
+//	compile 'net.masterthought:cucumber-reporting:'+cucumberReportingVersion
+	compile 'info.cukes:cucumber-java:'+cucumberVersion
+	compile 'info.cukes:cucumber-junit:'+cucumberVersion
+	compile 'org.slf4j:slf4j-api:'+slf4jVersion
+	compile 'org.slf4j:slf4j-log4j12:'+slf4jVersion
+	testCompile group: 'info.cukes', name: 'cucumber-picocontainer', version: '1.2.4'
+}
+
+test {
+	def urlPrefixDefault = 'www.'
+	def urlPrefixCustom = System.getProperty('env.urlPrefix');
+	if (urlPrefixCustom == null || urlPrefixCustom == '') {
+		urlPrefixCustom = urlPrefixDefault;
+	}
+	def browser = System.getProperty("env.browser");
+	if (browser == null || browser == '') {
+		browser = 'chrome'
+	}
+	def driverPath = System.getProperty("env.driverPath");
+	if (driverPath == null || driverPath == '') {
+		driverPath = 'drivers/linux/chromedriver_2_33'
+	}
+	def mode = System.getProperty("env.mode");
+	if (mode == null || mode == '') {
+		mode = 'normal'
+	}
+	def hubIpAddress = System.getProperty("env.hubIP");
+	if (hubIpAddress == null || hubIpAddress == '') {
+		hubIpAddress = '172.17.0.2:4444'
+	}
+	def tags = System.getProperty("cucumber.options");
+	if (tags == null || tags == '') {
+		tags = '--tags @acu'
+	}
+	systemProperties 'env.browser': browser
+	systemProperties 'env.driverPath': driverPath
+	systemProperties 'env.mode': mode
+	systemProperties 'env.hubIP': hubIpAddress
+	systemProperties 'env.urlPrefix' : urlPrefixCustom
+	//systemProperties 'env.browser': System.getProperty('env.browser')
+	//systemProperties 'env.driverPath': System.getProperty("env.driverPath")
+	systemProperties 'env.baseURL' : 'https://'+urlPrefixCustom+'restorationhardware.com'
+	systemProperties 'cucumber.options' : tags
+	systemProperties 'file.encoding' : 'utf-8'
+	
+	include '**/*Courgette.class'
+
+    outputs.upToDateWhen { false }
+}
