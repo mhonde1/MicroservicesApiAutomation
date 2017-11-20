@@ -17,12 +17,11 @@ repositories {
 dependencies {
 	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.3.5'
 	compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.6'
+	compile group: 'commons-logging', name: 'commons-logging', version: '1.2'
     testCompile 'junit:junit:'+junitVersion
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
     testCompile 'io.github.prashant-ramcharan:courgette-jvm:1.4.0'
     compile 'io.github.prashant-ramcharan:courgette-jvm:1.4.0'
-//	compile 'org.seleniumhq.selenium:selenium-firefox-driver:'+seleniumVersion
- //   compile 'org.seleniumhq.selenium:selenium-chrome-driver:'+seleniumVersion
 //	compile 'org.seleniumhq.selenium:selenium-api:'+seleniumVersion
 //	compile 'org.seleniumhq.selenium:selenium-java:'+seleniumVersion
 //	compile 'info.cukes:cucumber-core:'+cucumberVersion

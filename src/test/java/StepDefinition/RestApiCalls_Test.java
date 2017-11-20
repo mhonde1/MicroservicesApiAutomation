@@ -2,7 +2,9 @@ package StepDefinition;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.Asserts;
 
@@ -13,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 public class RestApiCalls_Test {
 private String baseUrl;
-HttpResponse getStubResponse = null;
+CloseableHttpResponse getStubResponse = null;
 
 
 
@@ -24,11 +26,17 @@ HttpResponse getStubResponse = null;
 	
 	@When("^I search for person \"(.*?)\"$")
 	public void iSearchForPerson(String name) throws Throwable {
-		HttpClient client = HttpClients.createDefault();
-		baseUrl = baseUrl.concat("search?source="+name);
-		HttpGet getStubMethod = new HttpGet(baseUrl);
+	//	HttpClient client = HttpClients.createDefault();
+		
+		//HttpGet getStubMethod = new HttpGet(baseUrl);
 	
-		getStubResponse = client.execute(getStubMethod);
+		//getStubResponse = client.execute(getStubMethod);
+		
+		baseUrl = baseUrl.concat("/search?source="+name);
+		
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet(baseUrl);
+		getStubResponse = httpclient.execute(httpGet);
       
 	}
 
